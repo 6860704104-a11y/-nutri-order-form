@@ -1,1 +1,115 @@
+<div style="max-width: 550px; margin: 20px auto; padding: 25px; border: 1px solid #e0e0e0; border-radius: 16px; font-family: 'Sukhumvit Set', 'Kanit', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.08); background: #ffffff;">
+  
+  <h2 style="text-align: center; color: #1e293b; margin-top: 0; margin-bottom: 20px;">สั่งซื้อวิตามินแผ่นฟิล์ม Nutri</h2>
+  
+  <form id="nutriOrderForm">
+    <!-- เลือกสูตรวิตามินพร้อมรูปภาพ -->
+    <label style="font-weight: bold; display: block; margin-bottom: 12px; color: #334155; font-size: 16px;">
+      1. เลือกสูตรวิตามินแผ่นฟิล์ม:
+    </label>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+      <!-- วิตามิน A -->
+      <label class="vitamin-card" style="border: 2px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s ease;">
+        <input type="radio" name="vitamin" value="Nutri Vitamin A" price="290" checked style="display: none;" onchange="updateSelection()">
+        <img src="https://vitaminoral.wordpress.com/wp-content/uploads/2026/09/4.jpg" alt="วิตามิน A" style="width: 100%; height: 140px; object-fit: cover; border-radius: 8px;">
+        <div style="font-weight: bold; margin-top: 10px; color: #0f172a;">Nutri Vitamin A</div>
+        <div style="color: #64748b; font-size: 13px; margin-top: 2px;">บำรุงสายตา & ผิวพรรณ</div>
+        <div style="color: #16a34a; font-weight: bold; margin-top: 6px;">฿290</div>
+      </label>
 
+      <!-- วิตามิน C -->
+      <label class="vitamin-card" style="border: 2px solid #e2e8f0; border-radius: 12px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s ease;">
+        <input type="radio" name="vitamin" value="Nutri Vitamin C" price="290" style="display: none;" onchange="updateSelection()">
+        <img src="https://vitaminoral.wordpress.com/wp-content/uploads/2026/09/5.jpg" alt="วิตามิน C" style="width: 100%; height: 140px; object-fit: cover; border-radius: 8px;">
+        <div style="font-weight: bold; margin-top: 10px; color: #0f172a;">Nutri Vitamin C</div>
+        <div style="color: #64748b; font-size: 13px; margin-top: 2px;">เสริมภูมิคุ้มกัน & ผิวกระจ่างใส</div>
+        <div style="color: #16a34a; font-weight: bold; margin-top: 6px;">฿290</div>
+      </label>
+    </div>
+
+    <!-- เลือกจำนวน -->
+    <div style="margin-bottom: 20px;">
+      <label style="font-weight: bold; display: block; margin-bottom: 8px; color: #334155; font-size: 16px;">
+        2. เลือกจำนวน (กล่อง):
+      </label>
+      <input type="number" id="quantity" value="1" min="1" onchange="calculateTotal()" onkeyup="calculateTotal()" 
+             style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+    </div>
+
+    <!-- กรอกข้อมูลผู้สั่งซื้อ -->
+    <div style="border-top: 1px solid #f1f5f9; padding-top: 15px; margin-top: 15px;">
+      <label style="font-weight: bold; display: block; margin-bottom: 12px; color: #334155; font-size: 16px;">
+        3. ข้อมูลจัดส่ง:
+      </label>
+
+      <div style="margin-bottom: 12px;">
+        <input type="text" id="custName" placeholder="ชื่อ-นามสกุล ผู้รับ" required 
+               style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <input type="tel" id="custPhone" placeholder="เบอร์โทรศัพท์" required 
+               style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <textarea id="custAddress" rows="3" placeholder="ที่อยู่จัดส่งโดยละเอียด" required 
+                  style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box;"></textarea>
+      </div>
+    </div>
+
+    <!-- สรุปยอดเงิน -->
+    <div style="background: #f8fafc; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: right;">
+      <span style="color: #64748b; font-size: 15px;">ราคารวมทั้งหมด: </span>
+      <span id="totalPrice" style="font-size: 22px; font-weight: bold; color: #16a34a;">฿290</span>
+    </div>
+
+    <!-- ปุ่มส่งคำสั่งซื้อ -->
+    <button type="submit" 
+            style="width: 100%; background: #16a34a; color: white; padding: 14px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer;">
+      ยืนยันการสั่งซื้อ
+    </button>
+  </form>
+</div>
+
+<script>
+  function updateSelection() {
+    const cards = document.querySelectorAll('.vitamin-card');
+    cards.forEach(card => {
+      const radio = card.querySelector('input[type="radio"]');
+      if (radio.checked) {
+        card.style.borderColor = '#16a34a';
+        card.style.backgroundColor = '#f0fdf4';
+      } else {
+        card.style.borderColor = '#e2e8f0';
+        card.style.backgroundColor = '#ffffff';
+      }
+    });
+    calculateTotal();
+  }
+
+  function calculateTotal() {
+    const selected = document.querySelector('input[name="vitamin"]:checked');
+    const qtyInput = document.getElementById('quantity');
+    let qty = parseInt(qtyInput.value) || 1;
+    if (qty < 1) qty = 1;
+    
+    const price = parseInt(selected.getAttribute('price')) || 0;
+    const total = price * qty;
+    
+    document.getElementById('totalPrice').innerText = '฿' + total.toLocaleString();
+  }
+
+  updateSelection();
+
+  document.getElementById('nutriOrderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const selected = document.querySelector('input[name="vitamin"]:checked').value;
+    const qty = document.getElementById('quantity').value;
+    const name = document.getElementById('custName').value;
+    const total = document.getElementById('totalPrice').innerText;
+
+    alert(`บันทึกการสั่งซื้อเรียบร้อย!\n\nรายการ: ${selected}\nจำนวน: ${qty} กล่อง\nผู้สั่งซื้อ: ${name}\nยอดรวม: ${total}`);
+  });
+</script>
